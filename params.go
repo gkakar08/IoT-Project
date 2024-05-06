@@ -11,14 +11,11 @@ BROKER_TLS_PORT=8883
 package main
 
 const (
-    BROKER_ADDR = "broker.emqx.io"
-    BROKER_TCP  = 1883
-    BROKER_WS   = 8083
-    BROKER_TLS  = 8883
-    BROKER_WSS  = 8084
-    BROKER_QUIC = 14567
+    BROKER_ADDR = "y4d72f30.ala.us-east-1.emqxsl.com"
+    BROKER_PORT = 1883
+    BROKER_L4   = "tcp"
 
-    CLIENT_ID = "go_mqtt_client"
-    CLIENT_USER = "emqx"
-    CLIENT_PSWD = "public"
+    CLIENT_ID   = "rpi-1"
+    CLIENT_USER = "UoGuelph-IoT"
+    CLIENT_PSWD = "UoGuelph-IoT-Sensors"
 )

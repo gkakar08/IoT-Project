@@ -18,10 +18,10 @@ var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err
     fmt.Printf("Connect lost: %v", err)
 }
 
-func NewClient() {
+func main() {
     opts := mqtt.NewClientOptions()
 
-    opts.AddBroker(fmt.Sprintf("tcp://%s:%d", BROKER_ADDR, BROKER_TCP))
+    opts.AddBroker(fmt.Sprintf("%s://%s:%d", BROKER_L4, BROKER_ADDR, BROKER_PORT))
     opts.SetClientID(CLIENT_ID)
     opts.SetUsername(CLIENT_USER)
     opts.SetPassword(CLIENT_PSWD)
@@ -38,7 +38,7 @@ func NewClient() {
     sub(client)
     publish(client)
 
-    client.Disconnect(250)
+    client.Disconnect(15000)
 }
 
 func publish(client mqtt.Client) {
@@ -55,6 +55,6 @@ func sub(client mqtt.Client) {
     topic := "topic/test"
     token := client.Subscribe(topic, 1, nil)
     token.Wait()
-  fmt.Printf("Subscribed to topic: %s", topic)
+    fmt.Printf("Subscribed to topic: %s", topic)
 }
 
