@@ -18,6 +18,25 @@ var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err
     fmt.Printf("Connect lost: %v", err)
 }
 
+func publish(client mqtt.Client) {
+    num := 10
+    for i := 0; i < num; i++ {
+        text := fmt.Sprintf("Message %d", i)
+        token := client.Publish(TOPIC, 0, false, text)
+        token.Wait()
+        time.Sleep(time.Second)
+    }
+}
+
+func sub(client mqtt.Client) {
+    token := client.Subscribe(TOPIC, 1, nil)
+    token.Wait()
+    fmt.Printf("Subscribed to topic: %s", TOPIC)
+}
+
+
+
+
 func main() {
     opts := mqtt.NewClientOptions()
 
@@ -30,31 +49,21 @@ func main() {
     opts.OnConnect = connectHandler
     opts.OnConnectionLost = connectLostHandler
 
+    fmt.Println("Client options configured")
+
     client := mqtt.NewClient(opts)
     if token := client.Connect(); token.Wait() && token.Error() != nil {
 	panic(token.Error())
     }
 
+    fmt.Println("Client initialized")
+
     sub(client)
+    fmt.Println("Client subscribed")
+
     publish(client)
+    fmt.Println("Client published")
 
     client.Disconnect(15000)
-}
-
-func publish(client mqtt.Client) {
-    num := 10
-    for i := 0; i < num; i++ {
-        text := fmt.Sprintf("Message %d", i)
-        token := client.Publish("topic/test", 0, false, text)
-        token.Wait()
-        time.Sleep(time.Second)
-    }
-}
-
-func sub(client mqtt.Client) {
-    topic := "topic/test"
-    token := client.Subscribe(topic, 1, nil)
-    token.Wait()
-    fmt.Printf("Subscribed to topic: %s", topic)
 }
 

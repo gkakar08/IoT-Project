@@ -18,4 +18,6 @@ const (
     CLIENT_ID   = "rpi-1"
     CLIENT_USER = "UoGuelph-IoT"
     CLIENT_PSWD = "UoGuelph-IoT-Sensors"
+
+    TOPIC = "sensor-1"
 )
