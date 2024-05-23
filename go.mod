@@ -1,4 +1,4 @@
-module github.com/The-Ahmed-Shahriar/IoT-Project
+module iot
 
 go 1.21.5
 

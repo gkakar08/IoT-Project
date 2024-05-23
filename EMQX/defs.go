@@ -1,4 +1,4 @@
-package main
+package publisher
 
 /** DEVICE CONFIGURATION **/
 
@@ -15,12 +15,6 @@ const (
 
 
 /** CONSTANTS **/
-
-// Logging flags
-const (
-	DEBUG_ENABLED = true
-	ERROR_ENABLED = true
-)
 
 // EMQX Broker Supported Transport Protocols
 // Note: Do not use Web Sockets (wss) in Golang; incompatible. Works fine in, e.g., Python

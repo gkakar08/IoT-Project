@@ -1,4 +1,4 @@
-package sensor
+package device
 
 import "time"
 
@@ -33,7 +33,7 @@ type Sensor interface {
 	// Config() parses given request and integrates the configuration
 	DispatchConfig(c string) error
 
-	// ConfigHelp() returns the configuration command settings as a displayable string
+	// ConfigHelp() returns the configuration command settings as a displayable string (TBD)
 	// ConfigHelp() string
 }
 
