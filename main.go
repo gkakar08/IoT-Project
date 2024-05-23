@@ -1,30 +1,39 @@
 package main
 
-import (
-	"fmt"
-	"log"
-	"os"
-	"time"
-
-	mqtt "github.com/eclipse/paho.mqtt.golang"
-)
-
-
-
-
-var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Printf("TOPIC: %s\n", msg.Topic())
-	fmt.Printf("MSG: %s\n", msg.Payload())
-}
-
-
+import "fmt"
 
 
 func main() {
 
+	pub, err := InitPublisher()
+	if err != nil {
+		fmt.Println("ERROR: Publisher could not be initialized!")
+		return
+	}
+	addSensors(pub)
+	pub.Run()
+}
+
+// Initialize your sensors through this function
+// Returns the number of sensors failed to add
+func addSensors(pub *Publisher) int {
+
+	// Add test/faux sensor
+	pub.
+}
+
+
+
+/*
+func main() {
+
     // Initialize logs
-    mqtt.DEBUG = log.New(os.Stdout, "\tMQTT DEBUG: ", 0)
-    mqtt.ERROR = log.New(os.Stdout, "\tMQTT ERROR: ", 0)
+	if DEBUG_ENABLED {
+    	mqtt.DEBUG = log.New(os.Stdout, "\tMQTT DEBUG: ", 0)
+	}
+    if ERROR_ENABLED {
+		mqtt.ERROR = log.New(os.Stdout, "\tMQTT ERROR: ", 0)
+	}
 
     // Setup client options
     opts := mqtt.NewClientOptions()
@@ -44,13 +53,13 @@ func main() {
     // Initialize client
     c := mqtt.NewClient(opts)
     if token := c.Connect(); token.Wait() && token.Error() != nil {
-	panic(token.Error())
+		panic(token.Error())
     }
 
     // Subscribe to a topic
     if token := c.Subscribe(TOPIC, 0, nil); token.Wait() && token.Error() != nil {
-	fmt.Println(token.Error())
-	os.Exit(1)
+		fmt.Println(token.Error())
+		os.Exit(1)
     }
 
     time.Sleep(6 * time.Second)
@@ -61,7 +70,6 @@ func main() {
 
     time.Sleep(6 * time.Second)
 
-    /*
 
     // Unscribe
     if token := c.Unsubscribe(TOPIC); token.Wait() && token.Error() != nil {
@@ -72,6 +80,7 @@ func main() {
     // Disconnect
     c.Disconnect(250)
     time.Sleep(1 * time.Second)
-    */
+
     time.Sleep(60*time.Second)
 }
+*/
