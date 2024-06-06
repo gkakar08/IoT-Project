@@ -5,21 +5,18 @@ package publisher
 // Hard-coded device configurations
 // => ONLY change this part as the device or broker instance change
 const (
-	BROKER_HOST = "y4d72f30.ala.us-east-1.emqxsl.com"
-	CLIENT_ID   = "Shah-Laptop"
+	BROKER_HOST = "g332f11e.ala.eu-central-1.emqxsl.com"
+	CLIENT_ID   = "fayaaz-Latitude-5430"
 	CLIENT_USER = "UoGuelph-IoT"
 	CLIENT_PSWD = "UoGuelph-IoT-Sensors"
 )
-
-
-
 
 /** CONSTANTS **/
 
 // EMQX Broker Supported Transport Protocols
 // Note: Do not use Web Sockets (wss) in Golang; incompatible. Works fine in, e.g., Python
 const (
-    SSL_SCHEME = "ssl"
+	SSL_SCHEME = "ssl"
 	SSL_PORT   = 8883
 
 	WSS_SCHEME = "wss"
