@@ -1,7 +1,6 @@
 package device
 
 import (
-	"fmt"
 	"strings"
 	"time"
 )
@@ -58,7 +57,6 @@ func (sensor *FauxSensor) Measure() (float64, error) {
 
 func (sensor *FauxSensor) DispatchConfig(c string) error {
 	// Ideally, parse the config request as a JSON object (TBD)
-	fmt.Println("Command issued: ", c)
 	switch (strings.ToLower(c)) {
 		case "reset":
 			sensor.Cur = 0

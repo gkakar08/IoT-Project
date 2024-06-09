@@ -5,10 +5,10 @@ package publisher
 // Hard-coded device configurations
 // => ONLY change this part as the device or broker instance change
 const (
-	BROKER_HOST = "y4d72f30.ala.us-east-1.emqxsl.com"
-	CLIENT_ID   = "Shah-Laptop"
-	CLIENT_USER = "UoGuelph-IoT"
-	CLIENT_PSWD = "UoGuelph-IoT-Sensors"
+	BROKER_HOST = ""
+	CLIENT_ID   = ""
+	CLIENT_USER = ""
+	CLIENT_PSWD = ""
 )
 
 
