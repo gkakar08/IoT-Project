@@ -7,8 +7,8 @@ package publisher
 const (
 	BROKER_HOST = "g332f11e.ala.eu-central-1.emqxsl.com"
 	CLIENT_ID   = "fayaaz-Latitude-5430"
-	CLIENT_USER = "UoGuelph-IoT"
-	CLIENT_PSWD = "UoGuelph-IoT-Sensors"
+	CLIENT_USER = "Fayaaz"
+	CLIENT_PSWD = "d+HUi6)b!.LE_KC"
 )
 
 /** CONSTANTS **/
