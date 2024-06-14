@@ -18,11 +18,20 @@ import (
 func setupSensors(pub *emqx.Publisher) error {
 
 	// (1) Add test/faux sensor
-	sensor := device.InitFauxSensor()
-	err := pub.AddSensor(sensor)
+	sensorFaux := device.InitFauxSensor()
+	err := pub.AddSensor(sensorFaux)
 	if err != nil {
 		return err
 	}
+
+	// (2) DHT11 sensor (temperature only)
+	/*
+	sensorDHT11 := device.InitDHT11(4, 10)
+	err = pub.AddSensor(sensorDHT11)
+	if err != nil {
+		return err
+	}
+	*/
 
 	return nil
 }

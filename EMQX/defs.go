@@ -5,10 +5,17 @@ package publisher
 // Hard-coded device configurations
 // => ONLY change this part as the device or broker instance change
 const (
+<<<<<<< HEAD
 	BROKER_HOST = "g332f11e.ala.eu-central-1.emqxsl.com"
 	CLIENT_ID   = "fayaaz-Latitude-5430"
 	CLIENT_USER = "Fayaaz"
 	CLIENT_PSWD = "d+HUi6)b!.LE_KC"
+=======
+	BROKER_HOST = ""
+	CLIENT_ID   = ""
+	CLIENT_USER = ""
+	CLIENT_PSWD = ""
+>>>>>>> 3b11dc6a7017b1981c1019815186a3c8c746cd48
 )
 
 /** CONSTANTS **/
