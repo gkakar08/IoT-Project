@@ -13,12 +13,9 @@ import (
 
 // Definition
 type Publisher struct {
-	client mqtt.Client
+	client  mqtt.Client
 	sensors []device.Sensor
 }
-
-
-
 
 /** INITIALIZATION FUNCTIONS **/
 
@@ -29,15 +26,14 @@ func InitPublisher() (*Publisher, error) {
 	client := mqtt.NewClient(getClientOptions())
 	token := client.Connect()
 	if token.WaitTimeout(10*time.Second) && token.Error() != nil {
-		return nil,token.Error()
-    }
+		return nil, token.Error()
+	}
 
 	// Initialize sensors
 	sens := []device.Sensor{}
 
-	return &Publisher{ client, sens },nil
+	return &Publisher{client, sens}, nil
 }
-
 
 // Fetch the set MQTT client options
 func getClientOptions() *mqtt.ClientOptions {
@@ -45,21 +41,20 @@ func getClientOptions() *mqtt.ClientOptions {
 	opts := mqtt.NewClientOptions()
 
 	// Set broker properties
-    opts.AddBroker(fmt.Sprintf("%s://%s:%d", SSL_SCHEME, BROKER_HOST, SSL_PORT))
-    opts.SetKeepAlive(60 * time.Second)
+	opts.AddBroker(fmt.Sprintf("%s://%s:%d", SSL_SCHEME, BROKER_HOST, SSL_PORT))
+	opts.SetKeepAlive(60 * time.Second)
 	// opts.SetPingTimeout(5 * time.Second)
 
 	// Set client
-    opts.SetClientID(CLIENT_ID)
-    opts.SetUsername(CLIENT_USER)
-    opts.SetPassword(CLIENT_PSWD)
+	opts.SetClientID(CLIENT_ID)
+	opts.SetUsername(CLIENT_USER)
+	opts.SetPassword(CLIENT_PSWD)
 
-    // Set default event handler(s)
-    opts.SetDefaultPublishHandler(DEFAULT_MSG_HANDLER)
+	// Set default event handler(s)
+	opts.SetDefaultPublishHandler(DEFAULT_MSG_HANDLER)
 
 	return opts
 }
-
 
 // Add a sensor to the publisher's registry
 // Returns nil is returned if and only if sensor functional and successfully registered
@@ -80,20 +75,17 @@ func (pub *Publisher) AddSensor(sensor device.Sensor) error {
 			if err != nil {
 				fmt.Println(err)
 			}
-			
+
 			// if config request is invalid, send back a help message (TBD)
 		}
-	
+
 		// Subscribe to the config topic with the handler
-		topic := fmt.Sprintf("%s/%s/%s", TOPIC_ROOT, sensor.Topic(), TOPIC_CONFIG)		// configuration topic
+		topic := fmt.Sprintf("%s/%s/%s", TOPIC_ROOT, sensor.Topic(), TOPIC_CONFIG) // configuration topic
 		token := pub.client.Subscribe(topic, 0, handler)
 		err = token.Error()
 	}
 	return err
 }
-
-
-
 
 /** MAIN FUNCTIONALITY **/
 
@@ -109,11 +101,8 @@ func (pub *Publisher) Run() {
 	}
 
 	// Need to implement halting/signaling channels for more complex device level control (TBD)
-	<- done
+	<-done
 }
-
-
-
 
 /** EVENT HANDLERS / EVENT HANDLER GENERATORS **/
 
@@ -143,7 +132,6 @@ func (pub *Publisher) handleSensor(sensor device.Sensor) {
 		}
 	}
 }
-
 
 // Default handler for general (unexpected) messages
 var DEFAULT_MSG_HANDLER mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
