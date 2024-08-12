@@ -1,0 +1,79 @@
+package main
+
+import (
+	"fmt"
+	"log"
+	"os"
+	"time"
+
+	mqtt "github.com/eclipse/paho.mqtt.golang"
+)
+
+// Define EMQX Cloud and MQTT broker settings here
+const (
+	emqxBroker   = "tcp://your-emqx-broker-url:1883"
+	mqttBroker   = "tcp://your-mqtt-broker-url:1883"
+	emqxUsername = "emqx-username"
+	emqxPassword = "emqx-password"
+	mqttUsername = "mqtt-username"
+	mqttPassword = "mqtt-password"
+	subTopic     = "subscribe/topic"
+	pubTopic     = "publish/topic"
+	clientID     = "emqx-to-mqtt-bridge"
+)
+
+func main() {
+	// Create EMQX client
+	emqxOpts := mqtt.NewClientOptions().
+		AddBroker(emqxBroker).
+		SetClientID(clientID + "_emqx").
+		SetUsername(emqxUsername).
+		SetPassword(emqxPassword).
+		SetDefaultPublishHandler(emqxMessageHandler)
+
+	emqxClient := mqtt.NewClient(emqxOpts)
+
+	// Connect to EMQX Cloud
+	if token := emqxClient.Connect(); token.Wait() && token.Error() != nil {
+		log.Fatalf("Failed to connect to EMQX Cloud: %v", token.Error())
+	}
+
+	// Create MQTT client
+	mqttOpts := mqtt.NewClientOptions().
+		AddBroker(mqttBroker).
+		SetClientID(clientID + "_mqtt").
+		SetUsername(mqttUsername).
+		SetPassword(mqttPassword)
+
+	mqttClient := mqtt.NewClient(mqttOpts)
+
+	// Connect to MQTT broker
+	if token := mqttClient.Connect(); token.Wait() && token.Error() != nil {
+		log.Fatalf("Failed to connect to MQTT broker: %v", token.Error())
+	}
+
+	// Subscribe to topic on EMQX Cloud
+	if token := emqxClient.Subscribe(subTopic, 0, func(client mqtt.Client, msg mqtt.Message) {
+		fmt.Printf("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic())
+
+		// Publish the message to the other MQTT broker
+		token := mqttClient.Publish(pubTopic, 0, false, msg.Payload())
+		token.Wait()
+		if token.Error() != nil {
+			log.Printf("Failed to publish message to MQTT broker: %v", token.Error())
+		}
+	}); token.Wait() && token.Error() != nil {
+		log.Fatalf("Failed to subscribe to topic: %v", token.Error())
+	}
+
+	// Keep the connection alive
+	for {
+		time.Sleep(1 * time.Second)
+	}
+}
+
+// Handler for incoming messages
+var emqxMessageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
+	fmt.Printf("Received message on topic %s: %s\n", msg.Topic(), msg.Payload())
+}
+
